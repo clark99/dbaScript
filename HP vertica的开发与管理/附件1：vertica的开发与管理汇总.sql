@@ -61,26 +61,26 @@
 		   sum(ros_count) as ros_count,								--计算表的物理文件个数
 		   TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') as exec_time
 	FROM projection_storage
-	WHERE projection_name='SDL_CASH_COLLECT_TRADE_D_b0'
+	WHERE projection_name=''
 	group by projection_schema,projection_name
 	ORDER BY projection_name
 
 	SELECT *
 	FROM projection_storage                                        --计算表在每个node节点的ros物理文件信息
-	WHERE projection_name='SDL_CASH_COLLECT_TRADE_D_b0'
+	WHERE projection_name=''
 	ORDER BY projection_name,
          node_name;
 
 
 3.查看表的segment分区信息：
-	SELECT GET_PROJECTIONS('BDW_BDL.BDL_ACC_BIND');	-- Projection Name: [Segmented] [Seg Cols] [# of Buddies] [Buddy Projections] [Safe] [UptoDate] [Stats]
-	select * from PROJECTIONS where projection_name='SDL_CASH_COLLECT_TRADE_D_b0';
+	SELECT GET_PROJECTIONS('BDW_BDL.');	-- Projection Name: [Segmented] [Seg Cols] [# of Buddies] [Buddy Projections] [Safe] [UptoDate] [Stats]
+	select * from PROJECTIONS where projection_name='';
 
 4.整理表的物理文件碎片，合并文件
-	select DO_TM_TASK ('moveout',  'BDW_SDL.SDL_CASH_COLLECT_TRADE_D_b0');
-	select DO_TM_TASK ('mergeout', 'BDW_SDL.SDL_CASH_COLLECT_TRADE_D_b0');
-	select DO_TM_TASK ('moveout',  'BDW_SDL.SDL_CASH_COLLECT_TRADE_D_b1');
-	select DO_TM_TASK ('mergeout', 'BDW_SDL.SDL_CASH_COLLECT_TRADE_D_b1');
+	select DO_TM_TASK ('moveout',  'BDW_SDL.');
+	select DO_TM_TASK ('mergeout', 'BDW_SDL.');
+	select DO_TM_TASK ('moveout',  'BDW_SDL.');
+	select DO_TM_TASK ('mergeout', 'BDW_SDL.');
 	合并之后的效果：
 	projection_name ros_row_count used_mb                                  ros_count exec_time           
 	--------------- ------------- ---------------------------------------- --------- ------------------- 
@@ -217,7 +217,7 @@
        data_type
 	FROM columns
 	WHERE table_schema='bdw_bdl'
-	  AND TABLE_NAME='BDL_T_PAY_ORDER_INFO_HIS'
+	  AND TABLE_NAME=''
 	ORDER BY ordinal_position;
 	SELECT a.ordinal_position,
 	       a.column_name,
@@ -227,9 +227,9 @@
 	FROM columns a,
 	     columns b
 	WHERE a.table_schema='TEMP'
-	  AND a.table_name='BDL_T_PAY_ORDER_INFO_HIS'
+	  AND a.table_name=''
 	  AND b.table_schema='BDW_BDL'
-	  AND b.table_name='BDL_T_PAY_ORDER_INFO_HIS'
+	  AND b.table_name=''
 	  AND b.ordinal_position=a.ordinal_position;
 
 	  2.
@@ -238,7 +238,7 @@
 	1.表的赋权：
 	SELECT 'grant '||privileges_description||' on '||object_schema||'.'||object_name||' to '||grantee||';'
 	FROM grants
-	WHERE object_name='BDL_T_PAY_ORDER_INFO_HIS'
+	WHERE object_name=''
 	AND grantee not in (select CURRENT_USER());
 
 	2.
