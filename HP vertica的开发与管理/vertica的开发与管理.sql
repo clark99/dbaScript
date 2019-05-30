@@ -218,7 +218,7 @@
        data_type
 	FROM columns
 	WHERE table_schema='bdw_bdl'
-	  AND TABLE_NAME='BDL_T_PAY_ORDER_INFO_HIS'
+	  AND TABLE_NAME='BDL_TABLE_NAME'
 	ORDER BY ordinal_position;
 	SELECT a.ordinal_position,
 	       a.column_name,
@@ -228,9 +228,9 @@
 	FROM columns a,
 	     columns b
 	WHERE a.table_schema='TEMP'
-	  AND a.table_name='BDL_T_PAY_ORDER_INFO_HIS'
+	  AND a.table_name='BDL_TABLE_NAME'
 	  AND b.table_schema='BDW_BDL'
-	  AND b.table_name='BDL_T_PAY_ORDER_INFO_HIS'
+	  AND b.table_name='BDL_TABLE_NAME'
 	  AND b.ordinal_position=a.ordinal_position;
 
 	  2.
